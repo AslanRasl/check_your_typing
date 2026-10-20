@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Typing Progress Dashboard</title>
+<style>
+:root{--bg:#0b1020;--panel:#131b2f;--panel2:#18233b;--text:#edf2ff;--muted:#9eacc9;--line:#2a3652;--accent:#8b9cff;--green:#45d6a0;--red:#ff7188}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 10% 0%,#1d2a50 0,transparent 34%),var(--bg);color:var(--text);font:15px/1.5 Inter,Segoe UI,Arial,sans-serif}
+.wrap{max-width:1400px;margin:auto;padding:28px 22px 48px}.top{display:flex;justify-content:space-between;gap:18px;align-items:center;margin-bottom:24px;flex-wrap:wrap}.eyebrow{color:var(--accent);font-weight:800;text-transform:uppercase;letter-spacing:.16em;font-size:11px}.title{font-size:clamp(28px,4vw,42px);line-height:1.1;margin:7px 0}.sub{color:var(--muted);margin:0}.pill{border:1px solid #3c4a70;background:#192441;padding:9px 13px;border-radius:99px;color:#d8e0ff;font-size:12px}
+.panel{background:linear-gradient(145deg,rgba(24,35,59,.97),rgba(17,25,44,.97));border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:0 12px 32px #0002}.section-head{display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap;margin-bottom:16px}.section-head h2{font-size:19px;margin:0}.section-head p{margin:4px 0 0;color:var(--muted);font-size:13px}
+.inputs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.input-card{background:#0e1629;border:1px solid var(--line);border-radius:15px;padding:15px}.input-title{display:flex;gap:9px;align-items:center;margin-bottom:10px;font-weight:700}.dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex-shrink:0}.input-title input{min-width:0;flex:1;background:transparent;color:var(--text);border:0;border-bottom:1px solid #35415d;padding:7px 3px;font:inherit;font-weight:700;outline:none}.input-title input:focus{border-color:var(--accent)}textarea{width:100%;min-height:130px;resize:vertical;background:#101a30;color:#e7edff;border:1px solid #2b3958;border-radius:10px;padding:11px;font:12px/1.5 Consolas,monospace;outline:none}textarea:focus{border-color:var(--accent)}.hint{font-size:11px;color:var(--muted);margin:8px 0 0}
+.actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:16px}.btn{border:0;border-radius:11px;padding:11px 16px;font-weight:800;cursor:pointer;font-size:13px}.primary{background:linear-gradient(135deg,#a3adff,#7b8cff);color:#10162a}.secondary{background:#202c47;border:1px solid #3a4867;color:#e7edff}.status{color:var(--muted);font-size:12px}
+.dashboard{margin-top:22px}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:18px}.stat{padding:17px;border-radius:15px;background:#111a2e;border:1px solid var(--line)}.stat .label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}.stat .value{font-size:27px;font-weight:800;margin-top:5px}.stat .small{font-size:12px;color:var(--muted)}
+.chart-panel{margin-bottom:18px}.chart-title{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.chart-title h2{margin:0;font-size:19px}.chart-title select{background:#0e1629;color:var(--text);border:1px solid #35415d;border-radius:9px;padding:9px}
+svg{width:100%;height:auto;display:block;overflow:visible}.chart-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;color:var(--muted);font-size:12px}.legend-item{display:flex;align-items:center;gap:6px}
+.people{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.person h3{margin:0;font-size:18px}.person-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:13px}.count{font-size:11px;color:var(--muted);background:#202b44;border-radius:99px;padding:5px 8px}.mini-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-bottom:14px}.mini{background:#0e1629;border-radius:10px;padding:9px}.mini span{display:block;color:var(--muted);font-size:10px}.mini strong{font-size:15px}.table-wrap{overflow:auto;max-height:370px;border:1px solid var(--line);border-radius:10px}table{width:100%;border-collapse:collapse;font-size:12px;white-space:nowrap}th{position:sticky;top:0;background:#202b44;color:#dce4ff;text-align:left}td,th{padding:9px 10px;border-bottom:1px solid #26334e}td{color:#d9e2f7}tbody tr:hover{background:#ffffff08}.up{color:var(--green);font-weight:700}.down{color:var(--red);font-weight:700}.flat{color:var(--muted)}.empty{padding:28px;text-align:center;color:var(--muted);border:1px dashed #35415d;border-radius:12px}
+footer{color:#7887a7;font-size:11px;text-align:center;margin-top:24px}
+@media(max-width:850px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.people{grid-template-columns:1fr}}@media(max-width:580px){.wrap{padding:18px 12px}.inputs{grid-template-columns:1fr}.mini-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.panel{padding:14px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div><div class="eyebrow">ICT101A · Team project</div><h1 class="title">Typing Progress</h1><p class="sub">Four students. Every attempt. One clear picture of progress.</p></div>
+    <div class="pill">OFFLINE-READY · HTML / CSS / JS</div>
+  </header>
+
+  <section class="panel">
+    <div class="section-head"><div><h2>01 / Add your tracker data</h2><p>Copy columns B–F from Excel, including the headings in row 5, and paste each student's block below.</p></div></div>
+    <div class="inputs" id="inputs"></div>
+    <div class="actions"><button class="btn primary" id="buildBtn">Build dashboard ↗</button><button class="btn secondary" id="demoBtn">Load demo data</button><button class="btn secondary" id="clearBtn">Clear all</button><span class="status" id="status" aria-live="polite">Paste the four trackers to begin.</span></div>
+    <p class="hint">Expected columns: Entry, Date, WPM, Accuracy, Minutes practised. Tab-separated Excel data is supported. Demo data is invented and should not be used for your presentation.</p>
+  </section>
+
+  <div class="dashboard" id="dashboard" hidden>
+    <div class="stats" id="summaryStats"></div>
+    <section class="panel chart-panel">
+      <div class="chart-title"><div><h2>02 / WPM across attempts</h2><p class="sub">Compare speed changes over the practice sequence.</p></div><select id="chartFilter" aria-label="Filter chart"><option value="all">All four students</option></select></div>
+      <div id="chart"></div><div class="chart-legend" id="legend"></div>
+    </section>
+    <div class="section-head"><div><h2>03 / Individual progress</h2><p>First, latest and best scores, accuracy, changes and days between dated attempts.</p></div></div>
+    <div class="people" id="people"></div>
+  </div>
+  <footer>Typing Progress Dashboard · Your data stays in this browser tab and is not uploaded anywhere.</footer>
+</div>
+<script>
+const COLORS=['#8f9cff','#45d6a0','#ffb86b','#ff78a8'];
+const names=['Student 1','Student 2','Student 3','Student 4'];
+const $=id=>document.getElementById(id);
+let students=[];
+function makeInputs(){ $('inputs').innerHTML=names.map((n,i)=>`<div class="input-card"><div class="input-title"><span class="dot" style="background:${COLORS[i]}"></span><input id="name${i}" value="${n}" aria-label="Student ${i+1} name"></div><textarea id="data${i}" placeholder="Paste ${n}'s Excel range here..."></textarea><p class="hint">Paste the complete range, including headers.</p></div>`).join('');}
+makeInputs();
+function parseDate(s){
+ if(!s)return null; s=String(s).trim();
+ let m=s.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{2,4})$/);
+ if(m){let y=+m[3];if(y<100)y+=2000;let d=new Date(y,+m[2]-1,+m[1]);return isNaN(d)?null:d;}
+ let d=new Date(s);return isNaN(d)?null:new Date(d.getFullYear(),d.getMonth(),d.getDate());
+}
+function number(v){if(v==null)return NaN;return parseFloat(String(v).replace(/,/g,'.').replace(/[^\d.+-]/g,''));}
+function accuracy(v){if(v==null||String(v).trim()==='')return null;let n=number(v);if(!Number.isFinite(n))return null;if(String(v).includes('%')||n>1)return n;return n*100;}
+function parseBlock(raw,name,color){
+ const lines=raw.trim().split(/\r?\n/).filter(x=>x.trim()!=='');
+ const rows=[];
+ for(const line of lines){
+   const c=line.includes('\t')?line.split('\t'):line.split(/\s{2,}/);
+   if(c.length<3)continue;
+   const vals=c.map(x=>x.trim());
+   // Skip the header row, wherever it appears.
+   if(vals.some(v=>/^(wpm|date|entry|accuracy)$/i.test(v)))continue;
+   const wpm=number(vals[2]);
+   if(!Number.isFinite(wpm)||wpm<=0)continue;
+   rows.push({entry:vals[0],dateText:vals[1]||'',date:parseDate(vals[1]),wpm,acc:accuracy(vals[3]),minutes:number(vals[4]),color});
+ }
+ rows.forEach((r,i)=>{r.index=i+1;r.entry=Number.isFinite(number(r.entry))&&r.entry!==''?number(r.entry):i+1;r.prev=rows[i-1]||null;r.delta=r.prev?r.wpm-r.prev.wpm:null;r.gap=r.prev&&r.date&&r.prev.date?Math.round((r.date-r.prev.date)/86400000):null;});
+ return {name,color,rows};
+}
+function fmt(n,d=1){return Number.isFinite(n)?Number(n.toFixed(d)).toString():'—'}
+function pct(n){return Number.isFinite(n)?`${fmt(n,1)}%`:'—'}
+function mean(a){const v=a.filter(Number.isFinite);return v.length?v.reduce((x,y)=>x+y,0)/v.length:NaN}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function dateLabel(d){return d?d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}):'Unknown'}
+function render(){
+ const valid=students.filter(s=>s.rows.length);
+ if(!valid.length){$('dashboard').hidden=true;return}
+ $('dashboard').hidden=false;
+ const allRows=valid.flatMap(s=>s.rows);
+ const overallFirst=allRows.length?allRows[0].wpm:NaN;
+ const overallBest=Math.max(...allRows.map(r=>r.wpm));
+ $('summaryStats').innerHTML=[
+  ['Students with data',`${valid.length}/4`,'trackers loaded'],
+  ['Valid attempts',allRows.length,'all rows included'],
+  ['Highest WPM',fmt(overallBest,0),'across all students'],
+  ['Average accuracy',pct(mean(allRows.map(r=>r.acc))),'valid accuracy values']
+ ].map(x=>`<div class="stat"><div class="label">${x[0]}</div><div class="value">${x[1]}</div><div class="small">${x[2]}</div></div>`).join('');
+ const filter=$('chartFilter'),old=filter.value;
+ filter.innerHTML='<option value="all">All four students</option>'+students.map((s,i)=>`<option value="${i}">${esc(s.name)}</option>`).join('');
+ if([...filter.options].some(o=>o.value===old))filter.value=old;
+ drawChart();
+ $('people').innerHTML=students.map(s=>{
+   const r=s.rows;
+   if(!r.length)return `<section class="panel person"><div class="person-top"><h3><span class="dot" style="background:${s.color};margin-right:8px"></span>${esc(s.name)}</h3><span class="count">0 attempts</span></div><div class="empty">No valid WPM results. Check the pasted data.</div></section>`;
+   const first=r[0].wpm,last=r[r.length-1].wpm,best=Math.max(...r.map(x=>x.wpm));
+   const ms=[['First WPM',fmt(first,0)],['Latest WPM',fmt(last,0)],['Best WPM',fmt(best,0)],['Change',`${last-first>0?'+':''}${fmt(last-first,0)} WPM`]];
+   return `<section class="panel person"><div class="person-top"><h3><span class="dot" style="background:${s.color};margin-right:8px"></span>${esc(s.name)}</h3><span class="count">${r.length} attempts</span></div><div class="mini-stats">${ms.map(x=>`<div class="mini"><span>${x[0]}</span><strong>${x[1]}</strong></div>`).join('')}</div><p class="sub" style="font-size:12px;margin:0 0 12px">Average accuracy: <b>${pct(mean(r.map(x=>x.acc)))}</b> · Latest practice: <b>${dateLabel(r[r.length-1].date)}</b></p><div class="table-wrap"><table><thead><tr><th>#</th><th>Date</th><th>WPM</th><th>Accuracy</th><th>Minutes</th><th>Change</th><th>Days since</th></tr></thead><tbody>${r.map(x=>`<tr><td>${esc(x.entry)}</td><td>${esc(x.dateText||'Unknown')}</td><td><b>${fmt(x.wpm,0)}</b></td><td>${pct(x.acc)}</td><td>${fmt(x.minutes,0)}</td><td class="${x.delta===null?'flat':x.delta>0?'up':x.delta<0?'down':'flat'}">${x.delta===null?'—':`${x.delta>0?'+':''}${fmt(x.delta,0)} ${x.delta>0?'↑':x.delta<0?'↓':'='}`}</td><td>${x.gap===null?'unknown':x.gap<0?'check dates':x.gap+' days'}</td></tr>`).join('')}</tbody></table></div></section>`;
+ }).join('');
+}
+function drawChart(){
+ const selected=$('chartFilter').value;
+ const series=students.map((s,i)=>({...s,idx:i})).filter(s=>selected==='all'||String(s.idx)===selected).filter(s=>s.rows.length);
+ const maxN=Math.max(1,...series.map(s=>s.rows.length));
+ const maxY=Math.max(10,...series.flatMap(s=>s.rows.map(r=>r.wpm)));
+ const W=900,H=330,L=48,R=20,T=22,B=42,pw=W-L-R,ph=H-T-B;
+ const x=i=>L+(i/Math.max(1,maxN-1))*pw,y=v=>T+ph-(v/maxY)*ph;
+ let out=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Line chart of words per minute across attempts">`;
+ for(let k=0;k<=4;k++){let val=maxY*k/4,yy=y(val);out+=`<line x1="${L}" y1="${yy}" x2="${W-R}" y2="${yy}" stroke="#2a3652" stroke-width="1"/><text x="${L-10}" y="${yy+4}" fill="#9eacc9" text-anchor="end" font-size="11">${Math.round(val)}</text>`}
+ for(const n of [1,Math.ceil(maxN/2),maxN]){let xx=x(n-1);out+=`<text x="${xx}" y="${H-12}" fill="#9eacc9" text-anchor="middle" font-size="11">${n}</text>`}
+ out+=`<text x="${W/2}" y="${H-1}" fill="#9eacc9" text-anchor="middle" font-size="10">Attempt number</text>`;
+ series.forEach(s=>{let pts=s.rows.map((r,i)=>`${x(i)},${y(r.wpm)}`).join(' ');out+=`<polyline points="${pts}" fill="none" stroke="${s.color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>`;s.rows.forEach((r,i)=>{out+=`<circle cx="${x(i)}" cy="${y(r.wpm)}" r="3.2" fill="${s.color}"><title>${esc(s.name)} · attempt ${i+1}: ${r.wpm} WPM</title></circle>`})});
+ out+='</svg>';$('chart').innerHTML=series.length?out:'<div class="empty">No chart data yet.</div>';
+ $('legend').innerHTML=series.map(s=>`<span class="legend-item"><span class="dot" style="background:${s.color}"></span>${esc(s.name)}</span>`).join('');
+}
+$('buildBtn').addEventListener('click',()=>{
+ students=names.map((_,i)=>parseBlock($(`data${i}`).value,$(`name${i}`).value.trim()||names[i],COLORS[i]));
+ const empty=students.filter(s=>!s.rows.length).map(s=>s.name);
+ const total=students.reduce((n,s)=>n+s.rows.length,0);
+ $('status').textContent=total?`${total} valid attempts loaded.${empty.length?' No valid rows for: '+empty.join(', '):' All four trackers are ready.'}`:'No valid WPM rows found. Paste Excel columns B–F including the headings.';
+ render();
+});
+$('chartFilter').addEventListener('change',drawChart);
+$('clearBtn').addEventListener('click',()=>{for(let i=0;i<4;i++){$(`data${i}`).value='';$(`name${i}`).value=names[i]}students=[];$('status').textContent='Cleared. Paste the four trackers to begin.';$('dashboard').hidden=true});
+$('demoBtn').addEventListener('click',()=>{
+ const demo=[
+ [['Entry','Date','WPM','Accuracy','Minutes practised'],[1,'01/10/2026',32,'91%',10],[2,'03/10/2026',36,'93%',12],[3,'03/10/2026',35,'94%',10],[4,'08/10/2026',42,'96%',15]],
+ [['Entry','Date','WPM','Accuracy','Minutes practised'],[1,'01/10/2026',28,'89%',10],[2,'02/10/2026',31,'91%',10],[3,'06/10/2026',34,'92%',12]],
+ [['Entry','Date','WPM','Accuracy','Minutes practised'],[1,'02/10/2026',40,'95%',15],[2,'04/10/2026',38,'94%',12],[3,'09/10/2026',44,'96%',15]],
+ [['Entry','Date','WPM','Accuracy','Minutes practised'],[1,'01/10/2026',25,'87%',8],[2,'05/10/2026',30,'90%',10],[3,'10/10/2026',33,'92%',12]]
+ ];
+ demo.forEach((rows,i)=>{$(`data${i}`).value=rows.map(r=>r.join('\t')).join('\n');$(`name${i}`).value=['Alex','Sam','Taylor','Jordan'][i]});
+ $('status').textContent='Demo data loaded. Click Build dashboard.';});
+</script>
+</body>
+</html>
