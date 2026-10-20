@@ -16,7 +16,71 @@
 svg{width:100%;height:auto;display:block;overflow:visible}.chart-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;color:var(--muted);font-size:12px}.legend-item{display:flex;align-items:center;gap:6px}
 .people{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.person h3{margin:0;font-size:18px}.person-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:13px}.count{font-size:11px;color:var(--muted);background:#202b44;border-radius:99px;padding:5px 8px}.mini-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-bottom:14px}.mini{background:#0e1629;border-radius:10px;padding:9px}.mini span{display:block;color:var(--muted);font-size:10px}.mini strong{font-size:15px}.table-wrap{overflow:auto;max-height:370px;border:1px solid var(--line);border-radius:10px}table{width:100%;border-collapse:collapse;font-size:12px;white-space:nowrap}th{position:sticky;top:0;background:#202b44;color:#dce4ff;text-align:left}td,th{padding:9px 10px;border-bottom:1px solid #26334e}td{color:#d9e2f7}tbody tr:hover{background:#ffffff08}.up{color:var(--green);font-weight:700}.down{color:var(--red);font-weight:700}.flat{color:var(--muted)}.empty{padding:28px;text-align:center;color:var(--muted);border:1px dashed #35415d;border-radius:12px}
 footer{color:#7887a7;font-size:11px;text-align:center;margin-top:24px}
-@media(max-width:850px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.people{grid-template-columns:1fr}}@media(max-width:580px){.wrap{padding:18px 12px}.inputs{grid-template-columns:1fr}.mini-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.panel{padding:14px}}
+@media(max-width:850px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.people{grid-template-columns:1fr}}
+@media(max-width:600px){
+  body{font-size:14px}
+  .wrap{padding:16px 12px 30px}
+  .top{align-items:flex-start;gap:12px;margin-bottom:18px}
+  .title{font-size:clamp(28px,9vw,36px)}
+  .sub{font-size:13px}
+  .pill{font-size:10px;padding:7px 10px}
+  .panel{padding:14px;border-radius:16px}
+  .section-head{align-items:flex-start;margin-bottom:13px}
+  .section-head h2,.chart-title h2{font-size:17px}
+  .section-head p{font-size:12px}
+  .inputs{grid-template-columns:minmax(0,1fr);gap:10px}
+  .input-card{padding:12px}
+  textarea{min-height:112px;font-size:12px}
+  .actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .btn{min-height:44px;padding:10px 8px;font-size:12px}
+  #buildBtn{grid-column:1/-1}
+  .status{grid-column:1/-1;line-height:1.4}
+  .hint{line-height:1.45}
+  .dashboard{margin-top:16px}
+  .stats{gap:8px;margin-bottom:12px}
+  .stat{padding:12px 10px;border-radius:12px;min-width:0}
+  .stat .label{font-size:9px;letter-spacing:.05em}
+  .stat .value{font-size:clamp(19px,6vw,24px);overflow-wrap:anywhere}
+  .stat .small{font-size:10px}
+  .chart-panel{margin-bottom:14px}
+  .chart-title{align-items:flex-start}
+  .chart-title select{width:100%;min-height:42px}
+  .chart-title>div{width:100%}
+  #chart{overflow:hidden}
+  .chart-legend{gap:9px;font-size:11px}
+  .people{gap:12px}
+  .person-top{align-items:flex-start}
+  .person h3{font-size:16px;overflow-wrap:anywhere}
+  .count{white-space:nowrap}
+  .mini-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+  .mini{padding:9px}
+  .mini strong{font-size:14px}
+  .table-wrap{max-height:none;overflow:visible;border:0;border-radius:0}
+  table,tbody{display:block;width:100%;white-space:normal}
+  thead{display:none}
+  tbody{display:grid;gap:8px}
+  tbody tr{display:grid;grid-template-columns:1fr 1fr;background:#0e1629;border:1px solid var(--line);border-radius:11px;padding:5px 10px}
+  td{display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-width:0;padding:7px 0;font-size:11px;text-align:left;overflow-wrap:anywhere}
+  td::before{color:var(--muted);font-size:10px;text-align:left;content:''}
+  td:nth-child(1)::before{content:'Attempt'}
+  td:nth-child(2)::before{content:'Date'}
+  td:nth-child(3)::before{content:'WPM'}
+  td:nth-child(4)::before{content:'Accuracy'}
+  td:nth-child(5)::before{content:'Minutes'}
+  td:nth-child(6)::before{content:'Change'}
+  td:nth-child(7)::before{content:'Days since'}
+  tbody tr:hover{background:#0e1629}
+  footer{line-height:1.5;margin-top:18px}
+}
+@media(max-width:360px){
+  .wrap{padding-left:9px;padding-right:9px}
+  .panel{padding:11px}
+  .stats{grid-template-columns:1fr 1fr}
+  .stat .label{font-size:8px}
+  .actions{grid-template-columns:1fr}
+  #buildBtn,.status{grid-column:auto}
+  tbody tr{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
